@@ -13,7 +13,7 @@ public class Creator {
 
     private static int size;
     private static BDDFactory fact;
-    private static BDD[][] all;
+    private static BDD[][] board;
     private static BDD org;
 
     public static BDD createBDD(int size, BDDFactory fact) {
@@ -22,17 +22,18 @@ public class Creator {
         Creator.fact = fact;
         Creator.size = size;
 
-        Creator.all = new BDD[size][size];
+        Creator.board = new BDD[size][size];
         int i, j;
+        
+        // set the board
         for (i = 0; i < size; i++) {
             for (j = 0; j < size; j++) {
-                all[i][j] = fact.ithVar(Util.getVarNumber(size,j,i));
+                board[i][j] = fact.ithVar(Util.getVarNumber(size,j,i));
             }
         }
 
-        /*
-         * Build requirements for each variable(field)
-         */
+        
+        //Build constrains for each field/var
         for (i = 0; i < size; i++) {
             for (j = 0; j < size; j++) {
                 create(i, j, fact);
@@ -57,7 +58,7 @@ public class Creator {
         int l;
         for (l = 0; l < size; l++) {
             if (l != i) {
-                BDD u = all[i][j].apply(all[l][j], BDDFactory.nand);
+                BDD u = board[i][j].apply(board[l][j], BDDFactory.nand);
                 oneQprRow.andWith(u);
             }
         }
@@ -69,7 +70,7 @@ public class Creator {
         int l;
         for (l = 0; l < size; l++) {
             if (l != j) {
-                BDD u = all[i][l].apply(all[i][j], BDDFactory.nand);
+                BDD u = board[i][l].apply(board[i][j], BDDFactory.nand);
                 oneQprCol.andWith(u);
             }
         }
@@ -84,7 +85,7 @@ public class Creator {
             int x = l - i + j;
             if (x >= 0 && x < size) {
                 if (l != i) {
-                    BDD u = all[i][j].apply(all[i][x], BDDFactory.nand);
+                    BDD u = board[i][j].apply(board[l][x], BDDFactory.nand);
                     oneQprUpRight.andWith(u);
                 }
             }
@@ -96,10 +97,10 @@ public class Creator {
         BDD oneQprUpRight = fact.one();
         int l;
         for (l = 0; l < size; l++) {
-            int x = l - i + j;
+            int x = i + j - l;
             if (x >= 0 && x < size) {
                 if (l != i) {
-                    BDD u = all[i][j].apply(all[l][x], BDDFactory.nand);
+                    BDD u = board[i][j].apply(board[l][x], BDDFactory.nand);
                     oneQprUpRight.andWith(u);
                 }
             }
@@ -112,7 +113,7 @@ public class Creator {
         BDD u = fact.zero();
         int l;
         for (l = 0; l < size; l++) {
-            u = u.apply(all[i][l], BDDFactory.xor);
+            u = u.apply(board[i][l], BDDFactory.xor);
         }
         minOneQprRow.andWith(u);
         return minOneQprRow;

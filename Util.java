@@ -1,17 +1,7 @@
-
 import java.util.Arrays;
 import net.sf.javabdd.BDD;
 import net.sf.javabdd.BDDFactory;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
-/*
- * To change this template, choose Tools | Templates and open the template in
- * the editor.
- */
-/**
- *
- * @author visti
- */
 public class Util {
 
     /**

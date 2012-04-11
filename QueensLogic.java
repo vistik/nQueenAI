@@ -30,7 +30,7 @@ public class QueensLogic {
         this.board = new int[x][y];
         fact = JFactory.init(nodes, cache);
         fact.setVarNum(size*size);
-//        System
+        // create the BDD
         queen = Creator.createBDD(size, fact);
         
         
@@ -48,12 +48,13 @@ public class QueensLogic {
 
         board[column][row] = 1;
         
+        // lock / restrict the board
         BDD restrict = Restrictor.restrict(queen, fact, board);
 
-        
+        // get the valid domains
         int validDomains[] = Util.getValidDomains(restrict, fact, x);
-		
-		// update the board using these domains
+        
+        // update the board using these domains
 	Util.update(validDomains, board);
 		
 

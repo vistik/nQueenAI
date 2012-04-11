@@ -1,16 +1,3 @@
-
-import net.sf.javabdd.BDD;
-import net.sf.javabdd.BDDFactory;
-
-/*
- * To change this template, choose Tools | Templates and open the template in
- * the editor.
- */
-
-/**
- *
- * @author visti
- */
 import net.sf.javabdd.BDD;
 import net.sf.javabdd.BDDFactory;
 
