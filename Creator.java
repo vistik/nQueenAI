@@ -31,7 +31,6 @@ public class Creator {
                 board[i][j] = fact.ithVar(Util.getVarNumber(size,j,i));
             }
         }
-
         
         //Build constrains for each field/var
         for (i = 0; i < size; i++) {
@@ -46,8 +45,8 @@ public class Creator {
 
         BDD allrules = oneQprRow(i, j).
                 andWith(oneQprCol(i, j)).
-                andWith(oneQprUpRight(i, j)).
                 andWith(oneQprDownRight(i, j)).
+                andWith(oneQprUpRight(i, j)).
                 andWith(minOneQprRow(i, j));
 
         Creator.org.andWith(allrules);
@@ -78,7 +77,7 @@ public class Creator {
 
     }
 
-    public static BDD oneQprUpRight(int i, int j) {
+    public static BDD oneQprDownRight(int i, int j) {
         BDD oneQprUpRight = fact.one();
         int l;
         for (l = 0; l < size; l++) {
@@ -93,19 +92,19 @@ public class Creator {
         return oneQprUpRight;
     }
 
-    public static BDD oneQprDownRight(int i, int j) {
-        BDD oneQprUpRight = fact.one();
+    public static BDD oneQprUpRight(int i, int j) {
+        BDD oneQprDownRight = fact.one();
         int l;
         for (l = 0; l < size; l++) {
             int x = i + j - l;
             if (x >= 0 && x < size) {
                 if (l != i) {
                     BDD u = board[i][j].apply(board[l][x], BDDFactory.nand);
-                    oneQprUpRight.andWith(u);
+                    oneQprDownRight.andWith(u);
                 }
             }
         }
-        return oneQprUpRight;
+        return oneQprDownRight;
     }
 
     public static BDD minOneQprRow(int i, int j) {
